@@ -101,8 +101,8 @@ This project demonstrates practical experience in:
 ## Installation
 
 ```bash
-git clone https://github.com/omarmusallam/laravel-ecommerce.git
-cd laravel-ecommerce
+git clone https://github.com/omarmusallam/laravel-ecommerce-platform.git
+cd laravel-ecommerce-platform
 composer install
 npm install
 cp .env.example .env
