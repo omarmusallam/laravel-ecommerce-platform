@@ -71,7 +71,7 @@ return [
 
     'timezone' => 'Asia/Gaza',
 
-    'currency' => 'ILS',
+    'currency' => 'USD',
 
     'api_key' => env('API_TOKEN'),
 
@@ -191,6 +191,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
             /*
              * Application Service Providers...
              */
@@ -219,7 +220,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Currency' => App\Helpers\Currency::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'DataTables' =>Yajra\DataTables\DataTablesServiceProvider::class,
     ])->toArray(),
 
 ];

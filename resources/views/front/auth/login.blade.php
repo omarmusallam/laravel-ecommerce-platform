@@ -15,12 +15,12 @@
                             <div class="social-login">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-4 col-12"><a class="btn facebook-btn"
-                                            href="{{ route('auth.socilaite.redirect', 'facebook') }}"><i
+                                            href="{{ route('auth.socialite.redirect', 'facebook') }}"><i
                                                 class="lni lni-facebook-filled"></i>
                                             {{ __('Facebook login') }}</a>
                                     </div>
                                     <div class="col-lg-6 col-md-4 col-12"><a class="btn google-btn"
-                                            href="{{ route('auth.socilaite.redirect', 'google') }}"><i
+                                            href="{{ route('auth.socialite.redirect', 'google') }}"><i
                                                 class="lni lni-google"></i> {{ __('Google login') }}</a>
                                     </div>
                                 </div>

@@ -30,16 +30,10 @@ class SendOrderCreatedNotification
     {
         $order = $event->order;
 
-        foreach ($order->items as $item) {
-            $store = $item->product->store;
-
-            // Find the admins associated with the store
-            $admins = Admin::where('store_id', $store->id)->get();
-
-            foreach ($admins as $admin) {
-                // Send notifications for each admin
-                $admin->notify(new OrderCreatedNotification($order));
-            }
+        $admin = Admin::where('store_id', $order->store_id)->first();
+        if ($admin) {
+            $admin->notify(new OrderCreatedNotification($order));
         }
+
     }
 }

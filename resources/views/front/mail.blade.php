@@ -16,13 +16,6 @@
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-        <p class="browserupgrade">
-          You are using an <strong>outdated</strong> browser. Please
-          <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-          your experience and security.
-        </p>
-      <![endif]-->
 
     <!-- Preloader -->
     <div class="preloader">
@@ -42,10 +35,10 @@
                 <div class="container">
                     <div class="success-content">
                         <i class="lni lni-envelope"></i>
-                        <h2>Your Mail Sent Successfully</h2>
-                        <p>Thanks for contacting with us, We will get back to you asap.</p>
+                        <h2>{{ __('Your Mail Sent Successfully') }}</h2>
+                        <p>{{ __('Thanks for contacting with us, We will get back to you asap.') }}</p>
                         <div class="button">
-                            <a href="{{ route('home') }}" class="btn">Back to Home</a>
+                            <a href="{{ route('home') }}" class="btn">{{ __('Back to Home') }}</a>
                         </div>
                     </div>
                 </div>

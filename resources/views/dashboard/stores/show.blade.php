@@ -29,7 +29,7 @@
             @if ($store->products->count())
                 @foreach ($products as $product)
                     <tr>
-                        <td><img src="{{ asset('storage/' . $product->image) }}" alt="" height="50px"></td>
+                        <td><img src="{{ $product->image_url }}" alt="" height="50px"></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->category->name }}</td>
                         <td>{{ $product->description }}</td>

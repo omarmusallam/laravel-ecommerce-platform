@@ -7,7 +7,12 @@
     <title>{{ $title }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('storage/' . $settings->invoice_stamp) }}" />
+    @php
+        $frontFavicon = $settings->invoice_stamp_url ?? asset('assets/images/favicon.svg');
+        $frontLogo = $settings->website_logo_url ?? asset('assets/images/logo/logo.svg');
+        $contactPhone = $settings->phone ?: '+1 202 555 0187';
+    @endphp
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $frontFavicon }}" />
 
     <!-- ========================= CSS here ========================= -->
 
@@ -100,9 +105,9 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="{{ route('home') }}">{{ trans('app.home') }}</a></li>
-                                <li><a href="{{ route('about-us') }}">@lang('app.about')</a></li>
-                                <li><a href="{{ route('contact-us') }}">{{ __('Contact Us') }}</a></li>
+                                <li><a href="{{ route('home') }}">الرئيسية</a></li>
+                                <li><a href="{{ route('about-us') }}">من نحن</a></li>
+                                <li><a href="{{ route('contact-us') }}">تواصل معنا</a></li>
                             </ul>
                         </div>
                     </div>
@@ -128,14 +133,14 @@
                             @else
                                 <div class="user">
                                     <i class="lni lni-user"></i>
-                                    {{ __('Hello') }}
+                                    مرحبًا بك
                                 </div>
                                 <ul class="user-login">
                                     <li>
-                                        <a href="{{ route('login') }}">{{ Lang::get('Sign In') }}</a>
+                                        <a href="{{ route('login') }}">تسجيل الدخول</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('user.register') }}">{{ __('Register') }}</a>
+                                        <a href="{{ route('user.register') }}">إنشاء حساب</a>
                                     </li>
                                 </ul>
                             @endauth
@@ -152,7 +157,7 @@
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img src="{{ asset('storage/' . $settings->website_logo) }}" alt="Logo">
+                            <img src="{{ $frontLogo }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
                     </div>
@@ -163,8 +168,8 @@
                                 <!-- navbar search start -->
                                 <div class="navbar-search search-style-5">
                                     <div class="search-input">
-                                        <x-form.input name="slug" placeholder="{{ __('Search') }}"
-                                            :value="request('slug')" />
+                                        <x-form.input name="name" placeholder="ابحث عن لابتوب أو هاتف أو شاشة"
+                                            :value="request('name')" />
                                     </div>
                                     <div class="search-btn">
                                         <button><i class="lni lni-search-alt"></i></button>
@@ -180,8 +185,8 @@
                         <div class="middle-right-area">
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
-                                <h3>{{ __('Phone') }} :
-                                    <span>(+970) 123 456 7890</span>
+                                <h3>الدعم الهاتفي :
+                                    <span>{{ $contactPhone }}</span>
                                 </h3>
                             </div>
                             <div class="navbar-cart">
@@ -206,7 +211,7 @@
                     <div class="nav-inner">
                         <!-- Start Mega Category Menu -->
                         <div class="mega-category-menu">
-                            <span class="cat-button"><i class="lni lni-menu"></i>{{ __('All Categories') }}</span>
+                            <span class="cat-button"><i class="lni lni-menu"></i>كل التصنيفات</span>
                             <ul class="sub-category">
                                 @if ($categories->count())
                                     @foreach ($categories as $category)
@@ -231,39 +236,39 @@
                                 <ul id="nav" class="navbar-nav ms-auto">
                                     <li class="nav-item">
                                         <a href="{{ route('home') }}"
-                                            aria-label="Toggle navigation">{{ __('Home') }}</a>
+                                            aria-label="Toggle navigation">الرئيسية</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="dd-menu collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-2"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">{{ __('Pages') }}</a>
+                                            aria-label="Toggle navigation">الصفحات</a>
                                         <ul class="sub-menu collapse" id="submenu-1-2">
                                             <li class="nav-item"><a
-                                                    href="{{ route('about-us') }}">{{ __('About Us') }}</a></li>
+                                                    href="{{ route('about-us') }}">من نحن</a></li>
                                             <li class="nav-item"><a
-                                                    href="{{ route('faq') }}">{{ __('Faq') }}</a></li>
+                                                    href="{{ route('faq') }}">الأسئلة الشائعة</a></li>
                                             <li class="nav-item"><a
-                                                    href="{{ route('login') }}">{{ __('Sign In') }}</a></li>
+                                                    href="{{ route('login') }}">تسجيل الدخول</a></li>
                                             <li class="nav-item"><a
-                                                    href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                                    href="{{ route('register') }}">إنشاء حساب</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">
                                         <a class="dd-menu collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">{{ __('Shop') }}</a>
+                                            aria-label="Toggle navigation">المتجر</a>
                                         <ul class="sub-menu collapse" id="submenu-1-3">
                                             {{-- <li class="nav-item"><a href="#">Shop Grid</a></li> --}}
                                             <li class="nav-item"><a
-                                                    href="{{ route('list-products.index') }}">{{ __('Products page') }}</a>
+                                                    href="{{ route('list-products.index') }}">كل المنتجات</a>
                                             </li>
                                             {{-- <li class="nav-item"><a href="#">shop Single</a></li> --}}
                                             <li class="nav-item"><a
-                                                    href="{{ route('cart.index') }}">{{ __('Cart') }}</a></li>
+                                                    href="{{ route('cart.index') }}">السلة</a></li>
                                             <li class="nav-item"><a
-                                                    href="{{ route('checkout') }}">{{ __('Checkout') }}</a></li>
+                                                    href="{{ route('checkout') }}">إتمام الطلب</a></li>
                                         </ul>
                                     </li>
                                     {{-- <li class="nav-item">
@@ -282,7 +287,7 @@
                                     </li> --}}
                                     <li class="nav-item">
                                         <a href="{{ route('contact-us') }}"
-                                            aria-label="Toggle navigation">{{ __('Contact Us') }}</a>
+                                            aria-label="Toggle navigation">تواصل معنا</a>
                                     </li>
                                 </ul>
                             </div> <!-- navbar collapse -->
@@ -293,7 +298,7 @@
                 <div class="col-lg-4 col-md-6 col-12">
                     <!-- Start Nav Social -->
                     <div class="nav-social">
-                        <h5 class="title">{{ __('Follow Us') }} :</h5>
+                        <h5 class="title">تابعنا :</h5>
                         <ul>
                             <li>
                                 <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
@@ -368,11 +373,11 @@
                         <div class="col-lg-3 col-md-6 col-12">
                             <!-- Single Widget -->
                             <div class="single-footer f-contact">
-                                <h3>{{ __('Get In Touch With Us') }}</h3>
-                                <p class="phone">{{ __('Phone') }} : +1 (900) 33 169 7720</p>
+                                <h3>تواصل مع فريق المتجر</h3>
+                                <p class="phone">الهاتف : {{ $contactPhone }}</p>
                                 <ul>
-                                    <li><span>{{ __('Monday - Friday') }} : </span> 9.00 am - 8.00 pm</li>
-                                    <li><span>{{ __('Saturday') }} : </span> 10.00 am - 6.00 pm</li>
+                                    <li><span>الأحد - الخميس : </span> 9:00 ص - 8:00 م</li>
+                                    <li><span>السبت : </span> 10:00 ص - 6:00 م</li>
                                 </ul>
                                 <p class="mail">
                                     <a href="mailto:{{ $settings->email }}">{{ $settings->email }}</a>
@@ -406,13 +411,13 @@
                         <div class="col-lg-3 col-md-6 col-12">
                             <!-- Single Widget -->
                             <div class="single-footer f-link">
-                                <h3>{{ __('Information') }}</h3>
+                                <h3>روابط مهمة</h3>
                                 <ul>
-                                    <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                    <li><a href="{{ route('login') }}">{{ __('Sign In') }}</a></li>
-                                    <li><a href="{{ route('about-us') }}">{{ __('About Us') }}</a></li>
-                                    <li><a href="{{ route('contact-us') }}">{{ __('Contact Us') }}</a></li>
-                                    <li><a href="{{ route('faq') }}">{{ __('FAQs Page') }}</a></li>
+                                    <li><a href="{{ route('register') }}">إنشاء حساب</a></li>
+                                    <li><a href="{{ route('login') }}">تسجيل الدخول</a></li>
+                                    <li><a href="{{ route('about-us') }}">من نحن</a></li>
+                                    <li><a href="{{ route('contact-us') }}">تواصل معنا</a></li>
+                                    <li><a href="{{ route('faq') }}">الأسئلة الشائعة</a></li>
                                 </ul>
                             </div>
                             <!-- End Single Widget -->
@@ -420,7 +425,7 @@
                         <div class="col-lg-3 col-md-6 col-12">
                             <!-- Single Widget -->
                             <div class="single-footer f-link">
-                                <h3>{{ __('Shop Departments') }}</h3>
+                                <h3>أقسام المتجر</h3>
                                 <ul>
                                     @if ($categories->count())
                                         @foreach ($categories as $category)
@@ -445,21 +450,21 @@
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-12">
                             <div class="payment-gateway">
-                                <span>{{ __('We Accept') }} :</span>
+                                <span>وسائل الدفع :</span>
                                 <img src="{{ asset('assets/images/footer/credit-cards-footer.png') }}"
                                     alt="#">
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
                             <div class="copyright">
-                                <p>{{ __('Designed and Developed by') }} :<a href="{{ route('home') }}"
+                                <p>تم تطوير المتجر بواسطة <a href="{{ route('home') }}"
                                         rel="nofollow" target="_blank">{{ $settings->name }}</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
                             <ul class="socila">
                                 <li>
-                                    <span>{{ __('Follow Us') }} :</span>
+                                    <span>تابعنا :</span>
                                 </li>
                                 <li><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
                                 <li><a href="#"><i class="lni lni-twitter-original"></i></a></li>

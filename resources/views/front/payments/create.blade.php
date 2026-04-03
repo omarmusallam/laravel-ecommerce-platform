@@ -21,7 +21,8 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // This is your test publishable API key.
-        const stripe = Stripe("{{ config('services.stripe.publishable_key') }}");
+        const stripeKey = "{{ config('services.stripe.publishable_key') }}";
+        const stripe = stripeKey ? Stripe(stripeKey) : null;
 
         let elements;
 
@@ -33,20 +34,30 @@
 
         // Fetches a payment intent and captures the client secret
         async function initialize() {
-            const {
-                clientSecret
-            } = await fetch("{{ route('stripe.paymentIntent.create', $order->id) }}", {
+            if (!stripe) {
+                showMessage("Stripe is not configured yet.");
+                document.querySelector("#submit").disabled = true;
+                return;
+            }
+
+            const response = await fetch("{{ route('stripe.paymentIntent.create', $order->id) }}", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "_token": "{{ csrf_token() }}"
-                }),
-            }).then((r) => r.json());
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                }
+            });
+
+            const payload = await response.json();
+
+            if (!response.ok || !payload.clientSecret) {
+                showMessage(payload.message || "Unable to initialize payment.");
+                document.querySelector("#submit").disabled = true;
+                return;
+            }
 
             elements = stripe.elements({
-                clientSecret
+                clientSecret: payload.clientSecret
             });
 
             const paymentElement = elements.create("payment");
@@ -91,7 +102,7 @@
 
             setTimeout(function() {
                 messageContainer.style.display = "none";
-                messageText.textContent = "";
+                messageContainer.textContent = "";
             }, 4000);
         }
 

@@ -17,8 +17,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             // You can add another Foreign ID for the delivery company/person
-            $table->point('current_location')->nullable();
-            $table->enum('status', ['in-progress', 'delivered'])->default('in-progress');
+            if (Schema::getConnection()->getDriverName() === 'sqlite') {
+                $table->string('current_location')->nullable();
+            } else {
+                $table->point('current_location')->nullable();
+            }
+            $table->enum('status', ['pending', 'in-progress', 'delivered'])->default('pending');
             $table->timestamps();
         });
     }

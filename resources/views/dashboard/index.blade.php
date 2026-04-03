@@ -5,16 +5,94 @@
     <li class="breadcrumb-item active">Dashboard</li>
 @endsection
 @section('content')
-    <p>Analytics Dashboard</p>
-    <hr>
-    <!-- Main content -->
+    @push('styles')
+        <style>
+            .dashboard-subtitle {
+                color: #667085;
+                margin-bottom: 1.25rem;
+                font-size: 1rem;
+            }
+
+            .dashboard-stat {
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 16px 35px rgba(15, 23, 42, 0.08);
+                margin-bottom: 1.25rem;
+            }
+
+            .dashboard-stat .inner {
+                padding: 1.25rem 1.25rem 1rem;
+            }
+
+            .dashboard-stat .inner h3 {
+                font-size: 2.1rem;
+                font-weight: 800;
+                margin-bottom: 0.35rem;
+            }
+
+            .dashboard-stat .inner p {
+                font-size: 1rem;
+                margin: 0;
+                opacity: 0.95;
+            }
+
+            .dashboard-stat .icon {
+                top: 14px;
+                right: 16px;
+                font-size: 54px;
+                opacity: 0.16;
+            }
+
+            .dashboard-stat .small-box-footer {
+                padding: 0.8rem 1rem;
+                font-weight: 600;
+            }
+
+            .dashboard-panel {
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+                padding: 1.25rem;
+                margin-top: 1rem;
+            }
+
+            .dashboard-panel-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+                flex-wrap: wrap;
+                margin-bottom: 1rem;
+            }
+
+            .dashboard-panel-title {
+                margin: 0;
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: #142033;
+            }
+
+            .chart-filter-group .btn {
+                border-radius: 999px !important;
+                padding: 0.45rem 0.95rem;
+                font-weight: 600;
+            }
+
+            .chart-filter-group .btn.active {
+                background: #1f7aff;
+                border-color: #1f7aff;
+                color: #fff;
+            }
+        </style>
+    @endpush
+
+    <p class="dashboard-subtitle">Monitor orders, products, categories, and registrations from one clean overview.</p>
+
     <section class="content">
         <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
+                    <div class="small-box bg-danger dashboard-stat">
                         <div class="inner">
                             <h3>{{ $totalOrder }}</h3>
 
@@ -27,10 +105,8 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
+                    <div class="small-box bg-success dashboard-stat">
                         <div class="inner">
                             <h3>{{ $todayOrder }}</h3>
 
@@ -43,10 +119,8 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
+                    <div class="small-box bg-warning dashboard-stat">
                         <div class="inner">
                             <h3>{{ $thisMonthOrder }}</h3>
 
@@ -59,10 +133,8 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box" style="color: white; background-color: rgb(63, 57, 57)">
+                    <div class="small-box dashboard-stat" style="color: white; background-color: rgb(63, 57, 57)">
                         <div class="inner">
                             <h3>{{ $thisYearOrder }}</h3>
 
@@ -75,13 +147,11 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
             </div>
-            <hr>
+
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-primary">
+                    <div class="small-box bg-primary dashboard-stat">
                         <div class="inner">
                             <h3>{{ $totalProduct }}</h3>
 
@@ -94,10 +164,8 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box " style="background-color: rgb(143, 67, 150); color: white">
+                    <div class="small-box dashboard-stat" style="background-color: rgb(143, 67, 150); color: white">
                         <div class="inner">
                             <h3>{{ $totalCategory }}</h3>
 
@@ -111,8 +179,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-secondary">
+                    <div class="small-box bg-secondary dashboard-stat">
                         <div class="inner">
                             <h3>{{ $totalUser }}</h3>
 
@@ -125,10 +192,8 @@
                                 class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
+                    <div class="small-box bg-info dashboard-stat">
                         <div class="inner">
                             <h3>{{ $totalAdmin }}</h3>
 
@@ -142,24 +207,32 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-    <div>
-        <div>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" data-group="day" class="btn btn-light">Day</button>
-                <button type="button" data-group="week" class="btn btn-light">Week</button>
-                <button type="button" data-group="month" class="btn btn-light">Month</button>
-                <button type="button" data-group="year" class="btn btn-light">Year</button>
+
+            <div class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                    <h2 class="dashboard-panel-title">Orders Analytics</h2>
+                    <div class="btn-group chart-filter-group" role="group" aria-label="Chart filters">
+                        <button type="button" data-group="day" class="btn btn-outline-secondary">Day</button>
+                        <button type="button" data-group="week" class="btn btn-outline-secondary">Week</button>
+                        <button type="button" data-group="month" class="btn btn-outline-secondary active">Month</button>
+                        <button type="button" data-group="year" class="btn btn-outline-secondary">Year</button>
+                    </div>
+                </div>
+
+                <canvas id="myChart" height="110"></canvas>
+            </div>
+
+            <div class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                    <h2 class="dashboard-panel-title">Calendar</h2>
+                </div>
+                <div class="card-body pt-0 px-0 pb-0">
+                    <div id="calendar" style="width: 100%"></div>
+                </div>
             </div>
         </div>
-        <canvas id="myChart" height="200" width="500"></canvas>
-    </div>
-    <div class="card-body pt-0">
-        <!--The calendar -->
-        <div id="calendar" style="width: 100%"></div>
-    </div>
+    </section>
+
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -190,9 +263,10 @@
 
             $('.btn-group .btn').on('click', function(e) {
                 e.preventDefault();
+                $('.chart-filter-group .btn').removeClass('active');
+                $(this).addClass('active');
                 displayChart($(this).data('group'));
-                // myChart.update()
-            })
+            });
             displayChart();
         </script>
     @endpush

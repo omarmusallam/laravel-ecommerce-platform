@@ -257,7 +257,7 @@
                     <p>{{ $settings->phone }}</p>
                 </div>
                 <div class="rigth2" style="margin-left: 140px">
-                    <img src="{{ asset('storage/' . $settings->qr_code) }}" width="60" height="60" alt="pin Image">
+                    <img src="{{ $settings->qr_code_url }}" width="60" height="60" alt="pin Image">
                     <p>{{ $settings->email }}</p>
                 </div>  
 

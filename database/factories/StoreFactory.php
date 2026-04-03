@@ -24,6 +24,7 @@ class StoreFactory extends Factory
             'description' => $this->faker->sentence(15),
             'logo_image' => $this->faker->imageUrl(300, 300),
             'cover_image' => $this->faker->imageUrl(800, 600),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

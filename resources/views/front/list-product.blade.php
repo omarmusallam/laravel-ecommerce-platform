@@ -1,4 +1,4 @@
-<x-front-layout title="{{ __('Products') }}">
+<x-front-layout title="المنتجات">
 
     <!-- Start Breadcrumbs -->
     <x-slot:breadcrumb>
@@ -7,14 +7,14 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="breadcrumbs-content">
-                            <h1 class="page-title"><a href="{{ route('list-products.index') }}">{{ __('Products') }}</a>
+                            <h1 class="page-title"><a href="{{ route('list-products.index') }}">المنتجات</a>
                             </h1>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> {{ __('Home') }}</a></li>
-                            <li>{{ __('Shop') }}</li>
+                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> الرئيسية</a></li>
+                            <li>المتجر</li>
                         </ul>
                     </div>
                 </div>
@@ -31,17 +31,17 @@
                     <div class="product-sidebar">
                         <!-- Start Single Widget -->
                         <div class="single-widget search">
-                            <h3>{{ __('Search Product') }}</h3>
+                            <h3>ابحث عن منتج</h3>
                             <form action="{{ URL::current() }}" method="get">
-                                <x-form.input name="slug" placeholder="{{ __('product name...') }}"
-                                    :value="request('slug')" />
+                                <x-form.input name="name" placeholder="اسم المنتج أو الفئة"
+                                    :value="request('name')" />
                                 <button type="submit"><i class="lni lni-search-alt"></i></button>
                             </form>
                         </div>
                         <!-- End Single Widget -->
                         <!-- Start Single Widget -->
                         <div class="single-widget">
-                            <h3>{{ __('All Categories') }}</h3>
+                            <h3>كل التصنيفات</h3>
                             <ul class="list">
                                 @if ($categories->count())
                                     @foreach ($categories as $category)
@@ -63,18 +63,14 @@
                             <div class="row align-items-center">
                                 <div class="col-lg-7 col-md-8 col-12">
                                     <div class="product-sorting">
-                                        <label for="sorting">{{ __('Sort by:') }}</label>
+                                        <label for="sorting">طريقة العرض</label>
                                         <select class="form-control" id="sorting">
-                                            <option>{{ __('Recently Added') }}</option>
-                                            <option><a href="#">Low - High Price</a></option>
-                                            <option><a href="">High - Low Price</a></option>
-                                            <option><a href="">A - Z Product</a></option>
-                                            <option><a href="">Z - A Product</a></option>
+                                            <option>الأحدث إضافة</option>
                                         </select>
-                                        <h3 class="total-show-product">{{ __('Showing') }}:
+                                        <h3 class="total-show-product">عرض:
                                             {{ $products->firstItem() }} -
-                                            {{ $products->lastItem() }} {{ __('of') }} {{ $products->total() }}
-                                            {{ __('items') }}</h3>
+                                            {{ $products->lastItem() }} من {{ $products->total() }}
+                                            منتج</h3>
 
                                     </div>
                                 </div>
@@ -109,7 +105,7 @@
                                                     <div class="button">
                                                         <a href="{{ route('products.show', $product->slug) }}"
                                                             class="btn"><i class="lni lni-cart"></i>
-                                                            {{ __('Add to Cart') }}</a>
+                                                            عرض المنتج</a>
                                                     </div>
                                                 </div>
                                                 <div class="product-info">
@@ -124,7 +120,7 @@
                                                         <li><i class="lni lni-star-filled"></i></li>
                                                         <li><i class="lni lni-star-filled"></i></li>
                                                         <li><i class="lni lni-star"></i></li>
-                                                        <li><span>4.0 {{ __('Review(s)') }}</span></li>
+                                                        <li><span>4.0 تقييم</span></li>
                                                     </ul>
                                                     <div class="price">
                                                         <span>{{ App\Helpers\Currency::format($product->price) }}</span>

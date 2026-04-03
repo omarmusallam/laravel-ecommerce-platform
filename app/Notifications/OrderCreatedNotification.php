@@ -60,10 +60,10 @@ class OrderCreatedNotification extends Notification
 
         return (new MailMessage)
             ->subject("New Order #{$this->order->number}")
-            ->from('goldenstore@gmail.com', 'Golden Store')
+            ->from(config('mail.from.address'), config('app.name'))
             ->greeting("Hi {$notifiable->name},")
             ->line("A new order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.")
-            ->action('View Order', url('admin/dashboard'))
+            ->action('View Order', route('dashboard.orders.show', $this->order->id))
             ->line('Thank you for using our application!');
     }
     public function toDatabase($notifiable)
@@ -73,7 +73,7 @@ class OrderCreatedNotification extends Notification
         return [
             'body' => "A new order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.",
             'icon' => 'fas fa-file',
-            'url' => url('/dashboard'),
+            'url' => route('dashboard.orders.show', $this->order->id),
             'order_id' => $this->order->id,
         ];
     }
@@ -84,7 +84,7 @@ class OrderCreatedNotification extends Notification
         return new BroadcastMessage([
             'body' => "A new order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.",
             'icon' => 'fas fa-file',
-            'url' => url('/dashboard'),
+            'url' => route('dashboard.orders.show', $this->order->id),
             'order_id' => $this->order->id,
         ]);
     }

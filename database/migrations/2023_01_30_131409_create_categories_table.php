@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->enum('status', ['active', 'archived']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

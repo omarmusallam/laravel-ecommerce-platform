@@ -20,6 +20,10 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnDelete();
+            $table->foreignId('admin_id')
+                ->nullable()
+                ->constrained('admins')
+                ->cascadeOnDelete();
             $table->foreignId('product_id')
                 ->constrained('products')
                 ->cascadeOnDelete();

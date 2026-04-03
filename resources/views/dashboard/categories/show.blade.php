@@ -28,7 +28,7 @@
             @if ($category->products->count())
                 @foreach ($products as $product)
                     <tr>
-                        <td><img src="{{ asset('storage/' . $product->image) }}" alt="img" height="50px"></td>
+                        <td><img src="{{ $product->image_url }}" alt="img" height="50px"></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->store->name }}</td>
                         <td>{{ $product->status }}</td>

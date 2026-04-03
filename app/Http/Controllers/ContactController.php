@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactMail;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,7 +20,7 @@ class ContactController extends Controller
             'name' => ['required', 'string'],
             'subject' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'phone' => ['required', 'numeric', 'max:10', 'min:9'],
+            'phone' => ['required', 'numeric', 'digits:10'],
             'message' => ['required', 'string'],
         ]);
         $data = [
@@ -30,8 +31,10 @@ class ContactController extends Controller
             'message' => $request->message,
         ];
 
-        Mail::to('omarrmo2001@gmail.com')->send(new ContactMail($data));
+        $recipient = Setting::query()->value('email') ?: config('mail.from.address');
 
-        return redirect()->back()->with('success', trans('Message sent successfully!'));
+        Mail::to($recipient)->send(new ContactMail($data));
+
+        return view('front.mail')->with('success', trans('Message sent successfully!'));
     }
 }

@@ -41,8 +41,17 @@
     <x-form.label>Image</x-form.label>
     <x-form.input type="file" name="image" accept="image/*" />
     @if ($product->image)
-        <img src="{{ asset('storage/' . $product->image) }}" alt="img" class="img-fit m-1 border p-1"
+        <img src="{{ $product->image_url }}" alt="img" class="img-fit m-1 border p-1"
             height="60">
+    @endif
+</div>
+<div class="form-group">
+    <x-form.label>Gallery</x-form.label>
+    <x-form.input type="file" name="gallery[]" accept="image/*" multiple />
+    @if ($product->images)
+        @foreach ($product->images as $image)
+            <img src="{{ $image->image_url }}" alt="img" class="img-fit m-1 border p-1" height="60">
+        @endforeach
     @endif
 </div>
 <div class="form-group">

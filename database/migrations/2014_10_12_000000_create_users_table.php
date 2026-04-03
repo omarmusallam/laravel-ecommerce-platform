@@ -20,7 +20,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_number')->nullable()->unique();
+            $table->enum('type', ['user', 'admin', 'super-admin'])->default('user');
+            $table->timestamp('last_active_at')->nullable();
+            $table->foreignId('store_id')->nullable()->constrained('stores')->nullOnDelete();
             $table->rememberToken();
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('provider_token', 1000)->nullable();
+            $table->text('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
+            $table->timestamp('two_factor_confirmed_at')->nullable();
             $table->timestamps();
         });
     }

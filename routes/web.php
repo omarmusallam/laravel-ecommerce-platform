@@ -17,6 +17,8 @@ use App\Http\Controllers\SendSms;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\StripeWebhooksController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
@@ -69,37 +71,37 @@ Route::group([
     Route::get('contact-us', [ContactController::class, 'index'])->name('contact-us');
     Route::post('contact-us', [ContactController::class, 'sendEmail'])->name('contact.send');
 
-    Route::get('mail-success', function () {
-        return view('front.mail-success');
-    })->name('mail-success');
-
-    Route::get('404', function () {
-        return view('front.404');
-    })->name('404');
-
     Route::get('faq', function () {
         return view('front.faq');
     })->name('faq');
-
-    Route::get('mail-success', function () {
-        return view('front.mail');
-    })->name('mail-success');
 
     Route::resource('list-products', ListProductsController::class);
 });
 
 // Login with facebook and google
 Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])
-    ->name('auth.socilaite.redirect');
+    ->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'])
-    ->name('auth.socilaite.callback');
+    ->name('auth.socialite.callback');
+Route::get('verify-email', EmailVerificationPromptController::class)
+    ->middleware('auth')
+    ->name('verification.notice.compat');
+Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+    ->middleware('auth');
+Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])
+    ->middleware('auth');
 
 // Payment
 Route::get('orders/{order}/pay', [PaymentsController::class, 'create'])
+    ->middleware('auth')
     ->name('orders.payments.create');
-Route::post('orders/{order}/stripe/paymeny-intent', [PaymentsController::class, 'createStripePaymentIntent'])
+Route::post('orders/{order}/stripe/payment-intent', [PaymentsController::class, 'createStripePaymentIntent'])
+    ->middleware('auth')
     ->name('stripe.paymentIntent.create');
+Route::post('orders/{order}/stripe/paymeny-intent', [PaymentsController::class, 'createStripePaymentIntent'])
+    ->middleware('auth');
 Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'confirm'])
+    ->middleware('auth')
     ->name('stripe.return');
 // Stripe webhook
 Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
@@ -117,3 +119,12 @@ Route::get('images/{disk}/{width}x{height}/{image}', [ImagesController::class, '
     ->where('image', '.*');
 
 require __DIR__ . '/dashboard.php';
+
+// copy storage folder to public folder
+Route::get('/storage/{file}', function ($file) {
+    $filepath = storage_path('app/public/' . $file);
+    if (!is_file($filepath)) {
+        abort(404);
+    }
+    return response()->file($filepath);
+})->where('file', '.*');

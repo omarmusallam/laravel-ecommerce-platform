@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 
 class ListProductsController extends Controller
 {
@@ -18,16 +17,22 @@ class ListProductsController extends Controller
     public function index()
     {
         $request = request();
-        $products = Product::inRandomOrder()->with('category')->active()
-            ->latest()
+        $products = Product::with('category')->active()
+            ->latest('id')
             ->filter2($request->query())
             ->paginate(15);
 
         if ($request->category) {
-            $products = Category::where('slug', $request->category)->firstOrFail()->products()->paginate(15);
+            $products = Category::where('slug', $request->category)
+                ->firstOrFail()
+                ->products()
+                ->with('category')
+                ->active()
+                ->latest('id')
+                ->paginate(15);
         }
 
-        $categories = Category::withCount('products')->get();
+        $categories = Category::active()->withCount('products')->orderBy('name')->get();
 
         return view('front.list-product', compact('products', 'categories'));
     }

@@ -22,6 +22,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('number')->unique();
             $table->string('payment_method');
+            $table->char('currency', 3)->default('ILS');
             // $table->enum('status', ['pending', 'processing', 'delivering', 'completed', 'cancelled', 'refunded'])
             //     ->default('pending');
             // $table->enum('payment_status', ['pending', 'paid', 'failed'])

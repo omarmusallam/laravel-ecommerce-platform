@@ -45,7 +45,7 @@
             @if ($products->count())
                 @foreach ($products as $product)
                     <tr>
-                        <td><img src="{{ asset('storage/' . $product->image) }}" alt="" height="50px"></td>
+                        <td><img src="{{ $product->image_url }}" alt="" height="50px"></td>
                         <td>{{ $product->id }}</td>
                         <td><a href="{{ route('dashboard.products.edit', $product->id) }}">{{ $product->name }}</a></td>
                         <td>{{ $product->category->name }}</td>

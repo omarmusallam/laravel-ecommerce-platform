@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -19,8 +20,34 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): Admin
+    public function create(array $input): User|Admin
     {
+        if (Config::get('fortify.guard') === 'admin') {
+            Validator::make($input, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique(Admin::class),
+                ],
+                'phone_number' => ['required', 'string', 'max:255'],
+                'password' => $this->passwordRules(),
+            ])->validate();
+
+            $admin = Admin::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'phone_number' => $input['phone_number'],
+                'password' => Hash::make($input['password']),
+            ]);
+
+            Auth::guard('admin')->login($admin);
+
+            return $admin;
+        }
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -33,14 +60,14 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $admin = Admin::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'phone_number' => $input['phone_number'],
             'password' => Hash::make($input['password']),
         ]);
 
-        Auth::login($admin);
-        return $admin;
+        Auth::login($user);
+
+        return $user;
     }
 }

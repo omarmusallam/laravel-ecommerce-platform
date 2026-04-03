@@ -43,7 +43,7 @@ class ProductsController extends Controller
         $categories = Category::all();
         return view('dashboard.products.index', compact('products', 'categories'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -69,22 +69,34 @@ class ProductsController extends Controller
         $this->authorize('create', Product::class);
 
         $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:100'],
+            'name' => ['required', 'string', 'min:3', 'max:100', 'unique:products,name'],
             'store_id' => ['required', 'int', 'exists:stores,id'],
             'category_id' => ['nullable', 'int', 'exists:categories,id'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric'],
             'compare_price' => ['nullable', 'numeric'],
+            'quantity' => ['nullable', 'integer', 'min:0'],
             'image' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
+            'gallery' => ['nullable', 'array'],
+            'gallery.*' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
             'status' => 'in:active,draft,archvied',
             // 'tags' => 'string',
         ]);
-        $request->merge([
-            'slug' => Str::slug($request->post('name'))
-        ]);
         $data = $request->except('image');
+        $data['slug'] = $this->generateUniqueSlug($request->post('name'));
         $data['image'] = $this->uploadImage($request);
         $product = Product::create($data);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $image = $file->store('uploads', [
+                    'disk' => 'public'
+                ]);
+                $product->images()->create([
+                    'image' => $image,
+                ]);
+            }
+        }
 
         return redirect()->route('dashboard.products.index')
             ->with('success', 'Product created');
@@ -100,6 +112,8 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
         $this->authorize('view', $product);
+
+        return view('dashboard.products.show', compact('product'));
     }
 
     /**
@@ -130,22 +144,24 @@ class ProductsController extends Controller
         $this->authorize('update', $product);
 
         $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:100'],
+            'name' => ['required', 'string', 'min:3', 'max:100', 'unique:products,name,' . $product->id],
             'store_id' => ['required', 'int', 'exists:stores,id'],
             'category_id' => ['nullable', 'int', 'exists:categories,id'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric'],
             'compare_price' => ['nullable', 'numeric'],
+            'quantity' => ['nullable', 'integer', 'min:0'],
             'image' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
+            'gallery' => ['nullable', 'array'],
+            'gallery.*' => ['image', 'max:1048576', 'dimensions:min_width=100,min_height=100'],
             'status' => 'in:active,draft,archvied',
             // 'tags' => 'string',
         ]);
 
-        // $product = Product::findOrFail($product);
-
-        $old_image = $request->image;
+        $oldImage = $product->image;
 
         $data = $request->except('image');
+        $data['slug'] = $this->generateUniqueSlug($request->post('name'), $product->id);
 
         $new_image = $this->uploadImage($request);
         if ($new_image) {
@@ -153,8 +169,18 @@ class ProductsController extends Controller
         }
         $product->update($data);
 
-        if ($old_image && $new_image) {
-            Storage::disk('public')->delete($old_image);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $image = $file->store('uploads', [
+                    'disk' => 'public'
+                ]);
+                $product->images()->create([
+                    'image' => $image,
+                ]);
+            }
+        }
+        if ($oldImage && $new_image && $oldImage !== $new_image) {
+            Storage::disk('public')->delete($oldImage);
         }
 
         // $product->update($request->except('tags'));
@@ -235,6 +261,25 @@ class ProductsController extends Controller
             'disk' => 'public'
         ]);
         return $path;
+    }
+
+    protected function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($name);
+        $baseSlug = $slug;
+        $counter = 1;
+
+        while (
+            Product::query()
+                ->when($ignoreId, fn ($query) => $query->where('id', '<>', $ignoreId))
+                ->where('slug', $slug)
+                ->exists()
+        ) {
+            $slug = "{$baseSlug}-{$counter}";
+            $counter++;
+        }
+
+        return $slug;
     }
 
 }

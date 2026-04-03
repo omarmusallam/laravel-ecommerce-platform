@@ -45,15 +45,15 @@
                                         <td>{{ $settings->phone }}</td>
                                         <td>{{ $settings->email }}</td>
                                         <td>{{ $settings->tax_number }}</td>
-                                        <td><img src="{{ asset('storage/' . $settings->website_logo) }}" width="150px"
+                                        <td><img src="{{ $settings->website_logo_url }}" width="150px"
                                                 alt="" style="max-height: 50px;"></td>
-                                        <td><img src="{{ asset('storage/' . $settings->epilogue_logo) }}" width="150px"
+                                        <td><img src="{{ $settings->epilogue_logo_url }}" width="150px"
                                                 alt="" style="max-height: 50px;"></td>
-                                        <td><img src="{{ asset('storage/' . $settings->tab_logo) }}" width="150px"
+                                        <td><img src="{{ $settings->tab_logo_url }}" width="150px"
                                                 alt="" style="max-height: 50px;"></td>
-                                        <td><img src="{{ asset('storage/' . $settings->qr_code) }}" alt=""
+                                        <td><img src="{{ $settings->qr_code_url }}" alt=""
                                                 style="max-height: 50px;"></td>
-                                        <td><img src="{{ asset('storage/' . $settings->invoice_stamp) }}" alt=""
+                                        <td><img src="{{ $settings->invoice_stamp_url }}" alt=""
                                                 style="max-height: 50px;"></td>
                                         @can('settings.update')
                                             <td>

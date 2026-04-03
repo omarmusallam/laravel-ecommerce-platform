@@ -12,6 +12,7 @@
                 padding: 10px;
                 margin-bottom: 10px;
                 color: #fff;
+                font-weight: bold;
                 border-radius: 4px;
             }
 
@@ -170,7 +171,6 @@
             const csrf_token = "{{ csrf_token() }}";
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        {{-- <script src="{{ asset('build/assets/js/cart.js') }}"></script> --}}
+        <script src="{{ asset('js/cart.js') }}"></script>
     @endpush
-    @vite('resources/js/cart.js')
 </x-front-layout>

@@ -12,8 +12,17 @@ class SocialController extends Controller
     {
         $user = Auth::user();
 
+        if (!$user || !$user->provider_token) {
+            return redirect()->route('login')->withErrors([
+                'email' => __('No linked social account token was found.'),
+            ]);
+        }
+
         $provider_user = Socialite::driver($provider)->userFromToken($user->provider_token);
 
-        dd($provider_user);
+        return response()->json([
+            'provider' => $provider,
+            'profile' => $provider_user,
+        ]);
     }
 }

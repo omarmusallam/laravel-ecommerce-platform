@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('postal_code')->nullable();
             $table->char('country', 2);
             $table->char('locale', 2)->default('en');
+            $table->string('profile_photo_path')->nullable();
             $table->timestamps();
 
             $table->primary('user_id');

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -21,6 +23,8 @@ class Product extends Model
         'store_id',
         'price',
         'compare_price',
+        'quantity',
+        'featured',
         'status',
     ];
 
@@ -57,6 +61,10 @@ class Product extends Model
         ]);
     }
 
+    public function images(){
+        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    }
+
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id');
@@ -79,7 +87,6 @@ class Product extends Model
         $builder->where('status', 'active');
     }
 
-    // Accessors
     public function getImageUrlAttribute()
     {
         if (!$this->image) {
@@ -88,7 +95,11 @@ class Product extends Model
         if (Str::startsWith($this->image, ['http://', 'https://'])) {
             return $this->image;
         }
-        return asset('storage/' . $this->image);
+        if ($this->isPublicAsset($this->image)) {
+            return asset(ltrim($this->image, '/'));
+        }
+
+        return Storage::disk('public')->url(ltrim($this->image, '/'));
     }
 
     public function getUrlAttribute()
@@ -103,6 +114,9 @@ class Product extends Model
         }
         if (Str::startsWith($this->image, ['http://', 'https://'])) {
             return $this->image;
+        }
+        if ($this->isPublicAsset($this->image)) {
+            return asset(ltrim($this->image, '/'));
         }
         return route('image', [
             'public',
@@ -157,5 +171,13 @@ class Product extends Model
             //     $builder->where('id', $value);
             // });
         });
+    }
+
+    protected function isPublicAsset(string $path): bool
+    {
+        $normalizedPath = ltrim($path, '/');
+
+        return Str::startsWith($normalizedPath, ['assets/'])
+            || File::exists(public_path($normalizedPath));
     }
 }

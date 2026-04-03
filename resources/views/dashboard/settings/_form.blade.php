@@ -60,18 +60,18 @@
             <div class="mt-md-0 mt-3 col-md-4">
                 <div class="form-group">
                     <label for="name" class="form-label">Site Logo</label>
-                    <input type="file" class="form-control" name="website_logo" accept="image/*">
+                    <input type="file" class="form-control" name="website_logo" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                     @if ($setting && $setting->website_logo)
-                        <img src="{{ asset('storage/' . $setting->website_logo) }}" alt="" width="150">
+                        <img src="{{ $setting->website_logo_url }}" alt="" width="150">
                     @endif
                 </div>
             </div>
             <div class="mt-md-0 mt-3 col-md-4">
                 <div class="form-group">
                     <label for="name" class="form-label">Outro logo</label>
-                    <input type="file" class="form-control" name="epilogue_logo" accept="image/*">
+                    <input type="file" class="form-control" name="epilogue_logo" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                     @if ($setting && $setting->epilogue_logo)
-                        <img src="{{ asset('storage/' . $setting->epilogue_logo) }}" alt="" width="150">
+                        <img src="{{ $setting->epilogue_logo_url }}" alt="" width="150">
                     @endif
                 </div>
             </div>
@@ -79,9 +79,9 @@
                 <div class="form-group">
                     <input type="hidden" name="id" value="6" id="">
                     <label for="name" class="form-label">tab logo</label>
-                    <input type="file" class="form-control" name="tab_logo" accept="image/*">
+                    <input type="file" class="form-control" name="tab_logo" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                     @if ($setting && $setting->tab_logo)
-                        <img src="{{ asset('storage/' . $setting->tab_logo) }}" alt="" height="60">
+                        <img src="{{ $setting->tab_logo_url }}" alt="" height="60">
                     @endif
                 </div>
             </div>
@@ -91,18 +91,18 @@
             <div class="mt-md-0 mt-3 col-md-6">
                 <div class="form-group">
                     <label for="name" class="form-label">QR Code</label>
-                    <input type="file" class="form-control" name="qr_code" accept="image/*">
+                    <input type="file" class="form-control" name="qr_code" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                     @if ($setting && $setting->qr_code)
-                        <img src="{{ asset('storage/' . $setting->qr_code) }}" alt="" height="60">
+                        <img src="{{ $setting->qr_code_url }}" alt="" height="60">
                     @endif
                 </div>
             </div>
             <div class="mt-md-0 mt-3 col-md-6">
                 <div class="form-group">
                     <label for="name" class="form-label">Invoice Stamp</label>
-                    <input type="file" class="form-control" name="invoice_stamp" accept="image/*">
+                    <input type="file" class="form-control" name="invoice_stamp" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                     @if ($setting && $setting->invoice_stamp)
-                        <img src="{{ asset('storage/' . $setting->invoice_stamp) }}" alt="" height="60">
+                        <img src="{{ $setting->invoice_stamp_url }}" alt="" height="60">
                     @endif
                 </div>
             </div>

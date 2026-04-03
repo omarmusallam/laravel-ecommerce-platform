@@ -26,6 +26,6 @@ class EmptyCart
      */
     public function handle($event)
     {
-        // Cart::empty();
+        Cart::empty();
     }
 }

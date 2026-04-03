@@ -28,6 +28,7 @@ class DashboardController extends Controller
     // Actions
     public function index()
     {
+        // $this->authorize('admin.dashboard', Product::class);
         $title = 'Store';
         $user = Auth::user();
 
@@ -57,7 +58,7 @@ class DashboardController extends Controller
         $chart1 = new LaravelChart($chart_options);
 
         return view('dashboard.index', [
-            'user' => 'Omar',
+            'user' => $user?->name,
             'title' => $title,
             'totalProduct' => $totalProduct,
             'totalCategory' => $totalCategory,

@@ -1,8 +1,8 @@
 <?php
 
 return [
+    'admin.dashboard' => __('Analytics Dashboard'),
 
-    'categories.view' => __('View categories'),
     'categories.create' => __('Create categories'),
     'categories.update' => 'Update categories',
     'categories.delete' => 'Delete categories',

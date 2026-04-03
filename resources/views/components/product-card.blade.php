@@ -5,12 +5,12 @@
         @if ($product->sale_percent)
             <span class="sale-tag">-{{ $product->sale_percent }}%</span>
         @endif
-        @if ($product->new)
-            <span class="new-tag">New</span>
+        @if ($product->featured)
+            <span class="new-tag">مميز</span>
         @endif
         <div class="button">
             <a href="{{ route('products.show', $product->slug) }}" class="btn add-to-cart"
-                data-id="{{ $product->id }}"><i class="lni lni-cart"></i> {{ __('Add to Cart') }}</a>
+                data-id="{{ $product->id }}"><i class="lni lni-cart"></i> عرض التفاصيل</a>
         </div>
     </div>
     <div class="product-info">
@@ -24,7 +24,7 @@
             <li><i class="lni lni-star-filled"></i></li>
             <li><i class="lni lni-star-filled"></i></li>
             <li><i class="lni lni-star"></i></li>
-            <li><span>4.0 {{ __('Review(s)') }}</span></li>
+            <li><span>4.0 تقييم</span></li>
         </ul>
         <div class="price">
             <span>{{ App\Helpers\Currency::format($product->price) }}</span>

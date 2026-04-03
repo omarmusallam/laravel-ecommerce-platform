@@ -83,11 +83,11 @@ class SettingController extends Controller
             'phone' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'tax_number' => 'nullable|string|max:255',
-            'website_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'epilogue_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'tab_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'qr_code' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'invoice_stamp' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'website_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'epilogue_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'tab_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'qr_code' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'invoice_stamp' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
         ]);
 
         $setting = Setting::findOrFail($id);

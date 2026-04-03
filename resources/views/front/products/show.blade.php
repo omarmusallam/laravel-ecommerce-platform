@@ -10,8 +10,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> {{ __('Home') }}</a></li>
-                            <li><a href="{{ route('products.index') }}">{{ __('Shop') }}</a></li>
+                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> الرئيسية</a></li>
+                            <li><a href="{{ route('list-products.index') }}">المتجر</a></li>
                             <li>{{ $product->name }}</li>
                         </ul>
                     </div>
@@ -46,13 +46,20 @@
                                 <div class="main-img">
                                     <img src="{{ $product->image_url }}" id="current" alt="#">
                                 </div>
+                                <div class="images">
+                                    @if ($product->images)
+                                        @foreach ($product->images as $image)
+                                            <img src="{{ $image->image_url }}" class="img" alt="#">
+                                        @endforeach
+                                    @endif
+                                </div>
                             </main>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
                             <h2 class="title">{{ $product->name }}</h2>
-                            <p class="category"><i class="lni lni-tag"></i> {{ __('Brand') }}:<a
+                            <p class="category"><i class="lni lni-tag"></i> التصنيف:<a
                                     href="javascript:void(0)">{{ $product->category->name }}</a></p>
                             <h3 class="price">{{ Currency::format($product->price) }}@if ($product->compare_price)
                                     <span>{{ Currency::format($product->compare_price) }}</span>
@@ -66,21 +73,22 @@
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="button cart-button mt-50">
                                             <a class="btn" id="add-to-cart" href="#"
-                                                style="width: 100%;">{{ __('Add to Cart') }}</a>
+                                                style="width: 100%;">أضف إلى السلة</a>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="form-group quantity">
-                                            <label for="color">{{ __('Quantity') }}</label>
+                                            <label for="color">الكمية</label>
                                             <select class="form-control" name="quantity">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                                @for ($quantity = 1; $quantity <= max(1, min(10, $product->quantity)); $quantity++)
+                                                    <option value="{{ $quantity }}">{{ $quantity }}</option>
+                                                @endfor
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="badge bg-light text-dark">المتوفر: {{ $product->quantity }} قطعة</span>
                                 </div>
                             </form>
                         </div>
@@ -110,6 +118,7 @@
                 });
             });
         </script>
+        <script src="{{ asset('js/cart.js') }}"></script>
     @endpush
 
 </x-front-layout>
