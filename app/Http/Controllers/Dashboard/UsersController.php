@@ -104,14 +104,20 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         Gate::authorize('users.update');
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('categories', 'name')->ignore($user)],
+            'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user)],
             'password' => ['nullable', 'min:9'],
             'roles' => 'nullable|array',
         ]);
 
-        $user->update($request->all());
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $user->update($validated);
         $user->roles()->sync($request->roles);
 
         return redirect()

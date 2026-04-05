@@ -31,7 +31,7 @@ class FrontLayout extends Component
      */
     public function render()
     {
-        return view('layouts.front');
+        return view('layouts.front-en');
     }
 
     protected function loadCategories(): Collection

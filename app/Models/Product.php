@@ -33,7 +33,7 @@ class Product extends Model
     protected $appends = [
         'image_url', 'url'
     ];
-    // يتم استدعائها مع المودل مباشرة
+    // Apply model boot logic as soon as the model is initialized.
     protected static function booted()
     {
         static::addGlobalScope('store', function (Builder $builder) {
@@ -73,12 +73,12 @@ class Product extends Model
     public function tags()
     {
         return $this->belongsToMany(
-            Tag::class, // Related Model
+            Tag::class, // Apply model boot logic as soon as the model is initialized.
             // 'product_tag',  // Pivot table name
-            // 'product_id',   // FK in pivot table for the current model
-            // 'tag_id',       // FK in pivot table for the related model
-            // 'id',           // PK current model
-            // 'id'            // PK related model
+            // Apply model boot logic as soon as the model is initialized.
+            // Apply model boot logic as soon as the model is initialized.
+            // Apply model boot logic as soon as the model is initialized.
+            // Apply model boot logic as soon as the model is initialized.
         );
     }
 
@@ -181,3 +181,4 @@ class Product extends Model
             || File::exists(public_path($normalizedPath));
     }
 }
+

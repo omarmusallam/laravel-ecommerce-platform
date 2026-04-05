@@ -38,13 +38,15 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'status' => 'in:active,inactive',
+            'store_id' => 'required|exists:stores,id',
+            'status' => 'in:active,draft,archvied',
             'price' => 'required|numeric|min:0',
             'compare_price' => 'nullable|numeric|gt:price',
+            'quantity' => 'nullable|integer|min:0',
         ]);
 
         $user = $request->user();
@@ -52,10 +54,10 @@ class ProductsController extends Controller
             abort(403, 'Not allowed');
         }
 
-        $product = Product::create($request->all());
+        $product = Product::create($validated);
 
         return Response::json($product, 201, [
-            'Location' => route('products.show', $product->id),
+            'Location' => url('/api/v1/products/' . $product->id),
         ]);
     }
 
@@ -67,10 +69,9 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        return new ProductResource($product);
-
-        return $product
-            ->load('category:id,name', 'store:id,name', 'tags:id,name');
+        return new ProductResource(
+            $product->load('category:id,name', 'store:id,name', 'tags:id,name')
+        );
     }
 
     /**
@@ -82,13 +83,15 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string|max:255',
             'category_id' => 'sometimes|required|exists:categories,id',
-            'status' => 'in:active,inactive',
+            'store_id' => 'sometimes|required|exists:stores,id',
+            'status' => 'in:active,draft,archvied',
             'price' => 'sometimes|required|numeric|min:0',
             'compare_price' => 'nullable|numeric|gt:price',
+            'quantity' => 'nullable|integer|min:0',
         ]);
 
         $user = $request->user();
@@ -96,7 +99,7 @@ class ProductsController extends Controller
             abort(403, 'Not allowed');
         }
 
-        $product->update($request->all());
+        $product->update($validated);
 
 
         return Response::json($product);

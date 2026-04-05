@@ -2,19 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
+use Symfony\Component\HttpFoundation\Response;
 
 class SendSms extends Controller
 {
-    public function send()
+    public function send(): JsonResponse
     {
-        $basic = new \Vonage\Client\Credentials\Basic("ae6775d8", "FGzDdqMzOtyE6Uvt");
+        abort_unless(App::environment('local'), Response::HTTP_NOT_FOUND);
+
+        $key = config('services.vonage.key');
+        $secret = config('services.vonage.secret');
+        $from = config('services.vonage.from');
+        $recipient = config('services.vonage.test_to');
+
+        abort_unless($key && $secret && $recipient, Response::HTTP_SERVICE_UNAVAILABLE);
+
+        $basic = new \Vonage\Client\Credentials\Basic($key, $secret);
         $client = new \Vonage\Client($basic);
 
-        $response = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS("972599984799", 'Store', 'test message')
+        $client->sms()->send(
+            new \Vonage\SMS\Message\SMS($recipient, $from, 'Test message from the local environment.')
         );
 
-        return response()->json('sms has been sent successfully', 200);
+        return response()->json([
+            'message' => 'SMS was sent successfully.',
+        ]);
     }
 }

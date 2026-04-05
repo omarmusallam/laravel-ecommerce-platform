@@ -110,16 +110,24 @@ class AdminsController extends Controller
     public function update(Request $request, Admin $admin)
     {
         Gate::authorize('admins.update');
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'nullable|string|max:255',
-            'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('admins', 'name')->ignore($admin)],
+            'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('admins', 'email')->ignore($admin)],
             'name' => ['nullable', 'string', 'max:32', Rule::unique('admins', 'name')->ignore($admin)],
             'phone_number' => 'nullable|min:9|numeric',
             'status' => 'in:active,inactive',
+            'store_id' => ['nullable', 'int', 'exists:stores,id'],
+            'password' => ['nullable', 'min:9'],
             'roles' => 'array',
         ]);
 
-        $admin->update($request->all());
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $admin->update($validated);
         $admin->roles()->sync($request->roles);
 
         return redirect()

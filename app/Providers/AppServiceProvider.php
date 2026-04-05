@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
     {
         return [
             'name' => config('app.name', 'Laravel'),
-            'currency' => config('app.currency', 'ILS'),
+            'currency' => config('app.currency', 'USD'),
             'phone' => '',
             'email' => config('mail.from.address', ''),
             'tax_number' => '',

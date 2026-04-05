@@ -98,20 +98,19 @@ Route::get('orders/{order}/pay', [PaymentsController::class, 'create'])
 Route::post('orders/{order}/stripe/payment-intent', [PaymentsController::class, 'createStripePaymentIntent'])
     ->middleware('auth')
     ->name('stripe.paymentIntent.create');
-Route::post('orders/{order}/stripe/paymeny-intent', [PaymentsController::class, 'createStripePaymentIntent'])
-    ->middleware('auth');
 Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'confirm'])
     ->middleware('auth')
     ->name('stripe.return');
 // Stripe webhook
-Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
+Route::post('stripe/webhook', [StripeWebhooksController::class, 'handle']);
 
 // Test delivery 
 Route::get('/orders/{order}', [OrdersController::class, 'show'])
     ->name('orders.show');
 
 // sms messages
-Route::get('send-sms', [SendSms::class, 'send']);
+Route::get('send-sms', [SendSms::class, 'send'])
+    ->middleware('auth:admin');
 
 // Working with images
 Route::get('images/{disk}/{width}x{height}/{image}', [ImagesController::class, 'index'])
@@ -122,9 +121,12 @@ require __DIR__ . '/dashboard.php';
 
 // copy storage folder to public folder
 Route::get('/storage/{file}', function ($file) {
-    $filepath = storage_path('app/public/' . $file);
-    if (!is_file($filepath)) {
+    $basePath = realpath(storage_path('app/public'));
+    $filepath = realpath(storage_path('app/public/' . $file));
+
+    if (!$basePath || !$filepath || !str_starts_with($filepath, $basePath . DIRECTORY_SEPARATOR) || !is_file($filepath)) {
         abort(404);
     }
+
     return response()->file($filepath);
 })->where('file', '.*');

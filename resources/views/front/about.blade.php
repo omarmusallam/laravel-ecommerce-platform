@@ -1,45 +1,103 @@
 <x-front-layout title="{{ __('About Us') }}">
+    @push('styles')
+        <style>
+            .about-shell {
+                background: linear-gradient(180deg, #f8fbff 0%, #ffffff 24%, #f8fafc 100%);
+            }
 
-    <x-slot:breadcrumb>
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="breadcrumbs-content">
-                            <h1 class="page-title">{{ __('About Us') }}</h1>
+            .about-hero {
+                padding: 24px 0 14px;
+            }
+
+            .about-hero p {
+                color: #667085;
+                max-width: 720px;
+                margin-bottom: 0;
+            }
+
+            .about-card {
+                background: #fff;
+                border: 1px solid #e8eef7;
+                border-radius: 28px;
+                padding: 28px;
+                box-shadow: 0 24px 50px rgba(15, 23, 42, 0.06);
+            }
+
+            .about-card img {
+                width: 100%;
+                height: 100%;
+                min-height: 420px;
+                object-fit: cover;
+                border-radius: 22px;
+            }
+
+            .about-copy {
+                padding-left: 12px;
+            }
+
+            .about-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 14px;
+                border-radius: 999px;
+                background: #edf4ff;
+                color: #0167f3;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 16px;
+            }
+
+            .about-copy h2 {
+                font-size: clamp(2rem, 4vw, 3rem);
+                line-height: 1.15;
+                margin-bottom: 16px;
+            }
+
+            .about-copy p {
+                color: #667085;
+                line-height: 1.9;
+                margin-bottom: 16px;
+            }
+
+            @media (max-width: 991.98px) {
+                .about-copy {
+                    padding-left: 0;
+                    margin-top: 24px;
+                }
+
+                .about-card img {
+                    min-height: 320px;
+                }
+            }
+        </style>
+    @endpush
+
+    <section class="about-us section about-shell">
+        <div class="container">
+            <div class="about-hero">
+                <h1>{{ __('About ShopGrids') }}</h1>
+                <p>{{ __('A calmer, more refined electronics storefront built around reliable products, clear pricing, and a smoother customer experience.') }}</p>
+            </div>
+
+            <div class="about-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6 col-md-12 col-12">
+                        <div class="content-left">
+                            <img src="{{ asset('assets/images/hero/slider-bg1.jpg') }}" alt="Digital Hub showroom">
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> {{ __('Home') }}</a></li>
-                            <li>{{ __('About-us') }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </x-slot:breadcrumb>
-
-    <!-- Start About Area -->
-    <section class="about-us section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-12 col-12">
-                    <div class="content-left">
-                        <img src="https://via.placeholder.com/540x420" alt="#">
-                        <a href="https://www.youtube.com/watch?v=r44RKWyfcFw&fbclid=IwAR21beSJORalzmzokxDRcGfkZA1AtRTE__l5N4r09HcGS5Y6vOluyouM9EM"
-                            class="glightbox video"><i class="lni lni-play"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-12">
-                    <!-- content-1 start -->
-                    <div class="content-right">
-                        <h2>{{ __('Golden Store - Perfumes & Gifts.') }}</h2>
-                        <p>{{ __('We are an online store for oud, incense, oriental and western perfumes. High quality and varied products for lovers of luxurious scents. Our collection is distinguished by its diversity and distinction, as it offers a wide variety of perfumes, essential oils, oud and incense. If you are looking for simple options, this experience makes you feel like you are in for a unique experience.') }}
+                    <div class="col-lg-6 col-md-12 col-12">
+                        <div class="content-right about-copy">
+                            <span class="about-chip">ShopGrids Story</span>
+                            <h2>{{ __('Modern electronics for everyday work and life.') }}</h2>
+                            <p>{{ __('ShopGrids is an online electronics store focused on dependable devices, clear pricing, and a smooth shopping experience. We curate laptops, smartphones, monitors, accessories, and smart office essentials that balance quality, performance, and long-term value.') }}
                         </p>
-                        <p>{{ __('We are keen to provide luxurious and original products, as we work with the most famous brands in the world of perfumes, incense and oud. We offer you an exceptional experience from our carefully selected collection, which combines cultural heritage with modern designs.') }}
+                            <p>{{ __('Our catalog is built for customers who want practical technology without unnecessary friction. We focus on trusted product lines, clean product information, and responsive support so each order feels reliable from the first visit to final delivery.') }}
                         </p>
-                        <p>{{ __('We strive to serve your shopping, strive to provide excellent service. Our helpful and professional team is ready to assist you and answer your inquiries, whether from products or purchases.') }}
+                            <p>{{ __('We continue to improve the storefront, payment flow, and after-sales support to make ShopGrids a stronger destination for modern e-commerce. Our team is ready to help with product questions, order guidance, and any issue that needs a fast, clear answer.') }}
                         </p>
                     </div>
                 </div>

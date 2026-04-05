@@ -22,7 +22,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('number')->unique();
             $table->string('payment_method');
-            $table->char('currency', 3)->default('ILS');
+            $table->char('currency', 3)->default('USD');
             // $table->enum('status', ['pending', 'processing', 'delivering', 'completed', 'cancelled', 'refunded'])
             //     ->default('pending');
             // $table->enum('payment_status', ['pending', 'paid', 'failed'])
@@ -46,3 +46,4 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
+

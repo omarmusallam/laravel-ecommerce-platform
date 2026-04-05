@@ -34,6 +34,6 @@ class HomeController extends Controller
         $product7 = $featuredProducts->get(4, $product6);
         $product8 = $featuredProducts->get(5, $product7);
 
-        return view('front.home', compact('products', 'products2', 'product3', 'product4', 'product5', 'product6', 'product7', 'product8'));
+        return view('front.home_en', compact('products', 'products2', 'product3', 'product4', 'product5', 'product6', 'product7', 'product8'));
     }
 }

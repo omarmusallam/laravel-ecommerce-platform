@@ -472,6 +472,7 @@
                     <div class="col-lg-3 col-md-3 col-7">
                         <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ $frontLogo }}" alt="ShopGrids">
+                            <span class="brand-text">ShopGrids</span>
                         </a>
                     </div>
                     <div class="col-lg-5 col-md-7 d-xs-none">

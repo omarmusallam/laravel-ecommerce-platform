@@ -18,6 +18,6 @@ class ProductsController extends Controller
             abort(404);
         }
 
-        return view('front.products.show', compact('product'));
+        return view('front.products.show-en', compact('product'));
     }
 }

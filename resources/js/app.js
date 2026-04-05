@@ -6,9 +6,15 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-var channel = Echo.private(`App.Models.User.${userID}`);
-channel.notification('.my-event', function (data) {
-    console.log(data);
-    alert(data.body);
-    // alert(JSON.stringify(data));
-});
+if (typeof window.Echo !== 'undefined' && typeof window.userID !== 'undefined' && window.userID) {
+    const channel = window.Echo.private(`App.Models.User.${window.userID}`);
+
+    channel.notification('.my-event', function (data) {
+        window.dispatchEvent(new CustomEvent('dashboard-notification', {
+            detail: {
+                title: data.title ?? 'New notification',
+                body: data.body ?? '',
+            },
+        }));
+    });
+}

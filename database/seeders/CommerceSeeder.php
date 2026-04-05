@@ -31,7 +31,7 @@ class CommerceSeeder extends Seeder
                     'store_id' => $storeId,
                     'user_id' => $user->id,
                     'payment_method' => 'stripe',
-                    'currency' => 'ILS',
+                    'currency' => 'USD',
                     'total' => 0,
                 ]);
 
@@ -57,10 +57,10 @@ class CommerceSeeder extends Seeder
                         'email' => $user->email,
                         'phone_number' => $user->phone_number ?? '0599999999',
                         'street_address' => 'Billing Street',
-                        'city' => 'Gaza',
-                        'postal_code' => '00000',
-                        'state' => 'Gaza',
-                        'country' => 'PS',
+                        'city' => 'Washington',
+                        'postal_code' => '20001',
+                        'state' => 'DC',
+                        'country' => 'US',
                     ],
                     [
                         'type' => 'shipping',
@@ -69,10 +69,10 @@ class CommerceSeeder extends Seeder
                         'email' => $user->email,
                         'phone_number' => $user->phone_number ?? '0599999999',
                         'street_address' => 'Shipping Street',
-                        'city' => 'Gaza',
-                        'postal_code' => '00000',
-                        'state' => 'Gaza',
-                        'country' => 'PS',
+                        'city' => 'Washington',
+                        'postal_code' => '20001',
+                        'state' => 'DC',
+                        'country' => 'US',
                     ],
                 ]);
 
@@ -81,7 +81,7 @@ class CommerceSeeder extends Seeder
                 Payment::query()->create([
                     'order_id' => $order->id,
                     'amount' => $total,
-                    'currency' => 'ILS',
+                    'currency' => 'USD',
                     'method' => 'stripe',
                     'status' => 'completed',
                     'transaction_id' => 'txn_' . Str::lower(Str::random(16)),

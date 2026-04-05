@@ -39,7 +39,7 @@ class ViewComposerServiceProvider extends ServiceProvider
         try {
             return Setting::query()->first() ?: new Setting([
                 'name' => config('app.name', 'Laravel'),
-                'currency' => config('app.currency', 'ILS'),
+                'currency' => config('app.currency', 'USD'),
                 'phone' => '',
                 'email' => config('mail.from.address', ''),
                 'tax_number' => '',
@@ -56,7 +56,7 @@ class ViewComposerServiceProvider extends ServiceProvider
 
             return new Setting([
                 'name' => config('app.name', 'Laravel'),
-                'currency' => config('app.currency', 'ILS'),
+                'currency' => config('app.currency', 'USD'),
                 'phone' => '',
                 'email' => config('mail.from.address', ''),
                 'tax_number' => '',

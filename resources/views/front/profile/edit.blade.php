@@ -53,7 +53,7 @@
                         <x-alert type="info" />
                         @if ($errors->any())
                             <div class="alert alert-danger">
-                                <h3>{{ __('Error Occured!') }}</h3>
+                                <h3>{{ __('An error occurred.') }}</h3>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -152,3 +152,4 @@
     </div>
     </div>
 </x-front-layout>
+

@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Front;
 
 use App\Events\OrderCreated;
 use App\Exceptions\InvalidOrderException;
-use App\Helpers\Currency;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Repositories\Cart\CartRepository;
-use App\Services\CurrencyConverter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,15 +16,6 @@ use Throwable;
 
 class CheckoutController extends Controller
 {
-    protected $currency;
-    protected $currencyConverter;
-
-    // public function __construct(Currency $currency, CurrencyConverter $currencyConverter)
-    // {
-    //     $this->currency = $currency;
-    //     $this->currencyConverter = $currencyConverter;
-    // }
-
     public function create(CartRepository $cart)
     {
         if ($cart->get()->count() == 0) {
@@ -50,21 +39,26 @@ class CheckoutController extends Controller
 
         $items = $cart->get()->groupBy('product.store_id')->all();
 
+        if (count($items) > 1) {
+            return redirect()->route('cart.index')
+                ->withErrors([
+                    'cart' => trans('Please complete checkout with items from one store at a time.'),
+                ]);
+        }
+
         DB::beginTransaction();
         try {
             foreach ($items as $store_id => $cart_items) {
-
-                // $currencyCode = $this->currency->format(0); // Use default value to access the currency code
-
-                // Convert the total to the selected currency using the CurrencyConverter
-                // $totalConverted = $this->currencyConverter->convert('USD', $currencyCode, $cart->total());
+                $orderTotal = collect($cart_items)->sum(function ($item) {
+                    return $item->quantity * $item->product->price;
+                });
 
                 $order = Order::create([
                     'store_id' => $store_id,
                     'user_id' => Auth::id(),
                     'payment_method' => 'stripe',
-                    'currency' => 'ILS',
-                    'total' => $cart->total(),
+                    'currency' => config('app.currency', 'USD'),
+                    'total' => round($orderTotal, 2),
                 ]);
 
                 foreach ($cart_items as $item) {
@@ -85,7 +79,6 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            //event('order.created', $order, Auth::user());
             event(new OrderCreated($order));
 
         } catch (Throwable $e) {

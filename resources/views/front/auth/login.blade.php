@@ -1,16 +1,49 @@
 <x-front-layout title="{{ __('Login') }}">
+    @push('styles')
+        <style>
+            .auth-shell {
+                background: linear-gradient(180deg, #f8fbff 0%, #ffffff 24%, #f8fafc 100%);
+            }
 
-    <!-- Start Account Login Area -->
-    <div class="account-login section">
+            .auth-card {
+                border: 1px solid #e8eef7;
+                border-radius: 28px;
+                box-shadow: 0 24px 50px rgba(15, 23, 42, 0.06);
+            }
+
+            .auth-card .card-body {
+                padding: 34px;
+            }
+
+            .auth-card .title p,
+            .auth-card .outer-link,
+            .auth-card .lost-pass {
+                color: #667085;
+            }
+
+            .auth-card .form-control {
+                height: 50px;
+                border-radius: 14px;
+                border-color: #d6e3f2;
+                box-shadow: none;
+            }
+
+            .auth-card .btn {
+                border-radius: 999px;
+            }
+        </style>
+    @endpush
+
+    <div class="account-login section auth-shell">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
-                    <form class="card login-form" action="{{ route('login') }}" method="post">
+                    <form class="card login-form auth-card" action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="title">
-                                <h3>{{ __('Login Now') }}</h3>
-                                <p>{{ __('You can login using your social media account or email address.') }}</p>
+                                <h3>{{ __('Welcome Back') }}</h3>
+                                <p>{{ __('Sign in to manage your orders, cart, and account details.') }}</p>
                             </div>
                             <div class="social-login">
                                 <div class="row">
@@ -34,7 +67,7 @@
                                 </div>
                             @endif
                             <div class="form-group input-group">
-                                <label for="reg-fn">{{ __('Email') }}</label>
+                                <label for="reg-fn">{{ __('Email or Phone') }}</label>
                                 <input class="form-control" type="text" name="{{ config('fortify.username') }}"
                                     id="reg-email" required>
                             </div>

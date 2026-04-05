@@ -34,7 +34,7 @@ class ListProductsController extends Controller
 
         $categories = Category::active()->withCount('products')->orderBy('name')->get();
 
-        return view('front.list-product', compact('products', 'categories'));
+        return view('front.list-product-en', compact('products', 'categories'));
     }
 
     /**

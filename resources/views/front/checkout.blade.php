@@ -1,32 +1,111 @@
 <x-front-layout title="{{ __('Checkout') }}">
+    @push('styles')
+        <style>
+            .checkout-shell {
+                background: linear-gradient(180deg, #f8fbff 0%, #ffffff 22%, #f8fafc 100%);
+            }
 
-    <x-slot:breadcrumb>
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="breadcrumbs-content">
-                            <h1 class="page-title">{{ __('Checkout') }}</h1>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> {{ __('Home') }}</a></li>
-                            <li><a href="{{ route('products.index') }}">{{ __('Shop') }}</a></li>
-                            <li>{{ __('Checkout') }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </x-slot:breadcrumb>
+            .checkout-hero {
+                padding: 24px 0 10px;
+            }
 
-    <!--====== Checkout Form Steps Part Start ======-->
+            .checkout-hero p {
+                color: #667085;
+                margin-bottom: 0;
+            }
 
-    <section class="checkout-wrapper section">
+            .checkout-card,
+            .checkout-sidebar-price-table {
+                background: #fff;
+                border: 1px solid #e8eef7;
+                border-radius: 24px;
+                box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+            }
+
+            .checkout-card {
+                padding: 10px 24px 24px;
+            }
+
+            .checkout-steps-form-style-1 > ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .checkout-steps-form-style-1 li {
+                margin-bottom: 18px;
+                border: 1px solid #edf2f7;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .checkout-steps-form-style-1 li .title {
+                margin: 0;
+                padding: 18px 22px;
+                background: #f8fbff;
+                font-size: 17px;
+                font-weight: 700;
+                color: #081828;
+            }
+
+            .checkout-steps-form-content {
+                padding: 22px;
+                background: #fff;
+            }
+
+            .single-form label,
+            .single-checkbox p {
+                color: #667085;
+                font-weight: 600;
+            }
+
+            .form-default .form-input input,
+            .form-default .form-input select {
+                height: 50px;
+                border-radius: 14px;
+                border: 1px solid #d6e3f2;
+                box-shadow: none;
+            }
+
+            .checkout-card .btn {
+                border-radius: 999px;
+            }
+
+            .checkout-sidebar-price-table {
+                padding: 24px;
+                margin-top: 0;
+                position: sticky;
+                top: 24px;
+            }
+
+            .checkout-sidebar-price-table .title {
+                margin-bottom: 18px;
+            }
+
+            .total-payable .payable-price {
+                border-radius: 18px;
+                background: #edf4ff !important;
+                padding: 14px 16px !important;
+            }
+
+            .total-payable .payable-price .value,
+            .total-payable .payable-price .price {
+                color: #0167f3 !important;
+                font-weight: 800 !important;
+            }
+        </style>
+    @endpush
+
+    <section class="checkout-wrapper section checkout-shell">
         <div class="container">
+            <div class="checkout-hero">
+                <h1>{{ __('Checkout') }}</h1>
+                <p>Enter your billing and shipping details to complete your order with a cleaner checkout flow.</p>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-lg-8">
+                    <div class="checkout-card">
                     <form action="{{ route('checkout') }}" method="post" id="payment-form">
                         @csrf
                         <div class="checkout-steps-form-style-1">
@@ -143,7 +222,7 @@
                                                 <div class="single-form button">
                                                     <button type="button" class="btn" data-bs-toggle="collapse"
                                                         data-bs-target="#collapseFour" aria-expanded="false"
-                                                        aria-controls="collapseFour">{{ __('next step') }}</button>
+                                                        aria-controls="collapseFour">{{ __('Next Step') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,7 +326,7 @@
                                                 <div class="steps-form-btn button">
                                                     <button type="button" class="btn" data-bs-toggle="collapse"
                                                         data-bs-target="#collapseThree" aria-expanded="false"
-                                                        aria-controls="collapseThree">{{ __('previous') }}</button>
+                                                        aria-controls="collapseThree">{{ __('Previous') }}</button>
 
                                                     <button class="btn"
                                                         type="submit">{{ __('Save & Continue') }}</button>
@@ -259,6 +338,7 @@
                             </ul>
                         </div>
                     </form>
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="checkout-sidebar">
@@ -289,15 +369,14 @@
                                 </div>
                                 <div class="total-price discount">
                                     <p class="value">{{ __('Tax') }}</p>
-                                    <p class="price">$00.00</p>
+                                    <p class="price">{{ Currency::format(00.0) }}</p>
                                 </div>
                             </div>
 
                             <div class="total-payable">
-                                <div class="payable-price" style="background: rgb(172, 183, 194); padding: 8px">
-                                    <p class="value" style="color: blue; font-weight: bold">
-                                        {{ __('Subtotal Price:') }}</p>
-                                    <p class="price" style="color: blue; font-weight: bold">
+                                <div class="payable-price">
+                                    <p class="value">{{ __('You Pay:') }}</p>
+                                    <p class="price">
                                         {{ Currency::format($cart->total()) }}</p>
                                 </div>
                             </div>

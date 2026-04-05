@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta charset="UTF-8">
     <title>#{{ $order->number }}</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
@@ -34,6 +33,10 @@
             }
         }
 
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
         .all {
             margin: 30px;
             border: 2px solid rgb(179, 24, 24);
@@ -54,10 +57,6 @@
             border-radius: 10px;
         }
 
-        hr {
-            border: 1px solid rgb(179, 24, 24);
-        }
-
         .tr-one {
             background-color: rgb(179, 24, 24);
             color: white;
@@ -66,7 +65,7 @@
         .first-table {
             padding: 10px;
             margin: 30px;
-            text-align: right;
+            text-align: left;
             display: flex;
             justify-content: center;
             border: 3px solid rgb(179, 24, 24);
@@ -88,9 +87,6 @@
             display: flex;
             justify-content: center;
             margin: 20px;
-            display: flex;
-            justify-content: center;
-            border-collapse: collapse;
             border-collapse: collapse;
             border: 3px solid rgb(179, 24, 24);
         }
@@ -106,7 +102,7 @@
 
         .third-table {
             margin: 40px;
-            text-align: right;
+            text-align: left;
             display: flex;
             justify-content: center;
             font-weight: bold;
@@ -144,10 +140,6 @@
             margin: 30px;
         }
 
-        .bord {
-            border-top: 3px solid rgb(188, 186, 186);
-        }
-
         .font1 {
             font-weight: 600;
             padding: 5px;
@@ -158,117 +150,113 @@
 <body>
     <div id="printable-content">
         <div class="all invoice">
-
             <header class="image">
-                <img src="{{ asset('assets/images/logo/logo.jpg') }}" alt="Header Image" width="400px">
+                <img src="{{ $settings->website_logo_url ?: asset('assets/images/logo/logo.jpg') }}" alt="Store logo" width="400">
             </header>
 
             <div class="first-table">
-                <table dir="rtl" claa="table1">
+                <table dir="ltr" class="table1">
                     <tr class="tr-one">
-                        <th colspan="4" style="padding: 8px">بيانات العميل</th>
+                        <th colspan="4" style="padding: 8px">Customer Details</th>
                     </tr>
                     <tr>
-                        <td>رقم الفاتورة :</td>
+                        <td>Invoice Number:</td>
                         <td style="color: rgb(179, 24, 24);">#{{ $order->number }}</td>
-                        <td>التاريخ :</td>
+                        <td>Date:</td>
                         <td>{{ $order->created_at->toDateString() }}</td>
                     </tr>
                     <tr>
-                        <td>اسم العميل :</td>
+                        <td>Customer Name:</td>
                         <td>{{ $order->billingAddress->name }}</td>
-                        <td>العنوان :</td>
-                        <td>{{ $order->billingAddress->city }} -
-                            {{ $order->billingAddress->street_address }}</td>
+                        <td>Address:</td>
+                        <td>{{ $order->billingAddress->city }} - {{ $order->billingAddress->street_address }}</td>
                     </tr>
                     <tr>
-                        <td>رقم الهاتف :</td>
+                        <td>Phone Number:</td>
                         <td>{{ $order->billingAddress->phone_number }}</td>
-                        <td>البريد :</td>
+                        <td>Email:</td>
                         <td>{{ $order->billingAddress->email }}</td>
                     </tr>
                 </table>
             </div>
-            <h2>تفاصيل الطلب</h2>
+
+            <h2>Order Details</h2>
 
             <div class="second-table">
-                <table dir="rtl">
+                <table dir="ltr">
                     <tr class="tr-one">
                         <td class="font1">#</td>
-                        <td class="font1">اسم المنتج</td>
-                        <td class="font1">الكمية</td>
-                        <td class="font1">السعر</td>
+                        <td class="font1">Product Name</td>
+                        <td class="font1">Quantity</td>
+                        <td class="font1">Price</td>
                     </tr>
                     @foreach ($order->items as $item)
                         <tr>
-                            <td> <img src="{{ $item->product->image_url }}" alt="img" width="70px"
-                                    height="70px">
-                            </td>
+                            <td><img src="{{ $item->product->image_url }}" alt="{{ $item->product_name }}" width="70" height="70"></td>
                             <td>{{ $item->product_name }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ $item->price }}</td>
+                            <td>{{ App\Helpers\Currency::format($item->price, $order->currency) }}</td>
                         </tr>
                     @endforeach
                     <tr>
                         <td>#</td>
-                        <td>خدمات التوصيل</td>
-                        <td> {{ $order->items->sum('quantity') }}</td>
-                        <td>0</td>
+                        <td>Delivery Services</td>
+                        <td>{{ $order->items->sum('quantity') }}</td>
+                        <td>{{ App\Helpers\Currency::format(0, $order->currency) }}</td>
                     </tr>
                 </table>
             </div>
 
             <div class="third-table">
-                <table dir="rtl">
+                <table dir="ltr">
                     <tr>
-                        <td>طريقة الدفع :</td>
+                        <td>Payment Method:</td>
                         <td>{{ $order->payment_method }}</td>
-                        <td>الختم :</td>
-                        <td><img src="{{ asset('assets/images/icon.png') }}" alt="img" width="25px"
-                                height="30px"></td>
+                        <td>Stamp:</td>
+                        <td>
+                            @if ($settings->invoice_stamp_url)
+                                <img src="{{ $settings->invoice_stamp_url }}" alt="Invoice stamp" width="25" height="30">
+                            @else
+                                <img src="{{ asset('assets/images/icon.png') }}" alt="Invoice stamp" width="25" height="30">
+                            @endif
+                        </td>
                     </tr>
                     <tr>
-                        <td>المبلغ الكلي :</td>
+                        <td>Total Amount:</td>
                         <td style="color: rgb(179, 24, 24)">
-                            {{ $order->items->sum(function ($product) {return $product->price * $product->quantity;}) }}
+                            {{ App\Helpers\Currency::format($order->items->sum(fn ($product) => $product->price * $product->quantity), $order->currency) }}
                         </td>
-                        {{-- <td>الختم :</td>
-                        <td><img src="{{ asset('assets/images/icon.png') }}" alt="img" width="25px"
-                                height="30px"></td> --}}
                     </tr>
                 </table>
             </div>
 
             <div class="container">
                 <div class="left" dir="ltr">
-                    <p>Thave recived the above devive in good
-                        condition with all collected
-                        accessorites</p>
+                    <p>I have received the above device in good condition with all collected accessories.</p>
                 </div>
-                <div class="rigth" dir="rtl">
-                    <p style="padding-right: 20px; padding-top: 18px">توقيع العميل و موافقته على أنظمة الضمان و خدمة
-                        التوصيل المجاني</p>
+                <div class="right" dir="ltr">
+                    <p style="padding: 18px 20px 0">Customer signature and approval of the warranty terms and complimentary delivery service.</p>
                 </div>
             </div>
-
 
             <div class="container2">
                 <div class="left2" style="text-align: left">
                     <p>{{ $settings->phone }}</p>
                 </div>
-                <div class="rigth2" style="margin-left: 140px">
-                    <img src="{{ $settings->qr_code_url }}" width="60" height="60" alt="pin Image">
+                <div class="right2" style="margin-left: 140px">
+                    @if ($settings->qr_code_url)
+                        <img src="{{ $settings->qr_code_url }}" width="60" height="60" alt="QR code">
+                    @endif
                     <p>{{ $settings->email }}</p>
-                </div>  
-
+                </div>
             </div>
 
         </div>
     </div>
     <script>
         window.onload = function() {
-            var printableContent = document.getElementById("printable-content");
-            printableContent.style.display = "block";
+            var printableContent = document.getElementById('printable-content');
+            printableContent.style.display = 'block';
 
             window.print();
         };

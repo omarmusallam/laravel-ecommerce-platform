@@ -25,7 +25,7 @@ class Cart extends Model
 
     public static function booted()
     {
-        // انشاء id مع كل cart
+        // Generate a UUID for each cart record.
         // static::creating(function(Cart $cart) {
         //     $cart->id = Str::uuid();
         // });
@@ -64,3 +64,4 @@ class Cart extends Model
         return $this->belongsTo(Product::class);
     }
 }
+
